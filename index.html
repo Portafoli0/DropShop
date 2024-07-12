@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DropShop</title>
+        <link href="styles.css" rel="stylesheet" type="text/css">
+        <script src="js/Productos.js"></script>
+        
+        <!-- Cargar fuentes de tipografia para la pagina web --->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    </head>
+
+
+    <body>
+        <header>PAGA EN CASA + ENV&Iacute;OS GRATIS</header>
+
+        <nav>
+            
+            <img src="icons/menu.png" id="Menu-Button">
+
+            <img src="icons/Logo.png" style="width: 160px; height: auto">
+
+            <ul class="Menu-Options">
+
+                <div class="Menu-Options-Icons">
+                    <img src="icons/menu.png" style="margin-right: 5px;">
+                    <h3 style="margin-right: 125px;">Men&uacute;</h3>
+                    <img src="icons/equis.png" id="Close-Icon">
+                </div>
+
+                <li> <a href="">Hogar</a> </li>
+                <li> <a href="">Tecnolog&iacute;a</a> </li>
+                <li> <a href="">Belleza</a> </li>
+                <li> <a href="">Vestimenta</a> </li>
+                <li> <a href="">Mascotas</a> </li>
+                <li> <a href="">Camping</a> </li>
+
+            </ul>
+
+            <div class="Container-Icons-Search-Buy" style="display: flex;">
+
+                <img src="icons/lupa.png" id="Lupa-Icon-For-Mobile">
+                
+                <div class="Container-Search" style="display: flex;">
+                    <input type="text" placeholder="Buscar productos" id="Search">
+                    <input type="button" value="Buscar" id="Button-Search">
+                    <img src="icons/equis.png" style="margin-left: 18px;" id="Close-Icon-1">
+                </div>
+
+                <img src="icons/carrito-de-compras.png" style="margin-left: 20px;">
+                <div class="Numero"></div>
+
+            </div>
+
+        </nav>
+
+        <main>
+            <h2 id="Titulo">Tecnolog&iacute;a</h2>
+
+            <div class="Contenedor-De-Productos">
+                
+                <div class="Productos">
+                    <img src="ImagenesProductos/1702909167camara foco22.webp" class="Imagen-Del-Producto">
+                    
+                    <div class="Lugar_Donde_Se_Mostraran_Los_Descuentos">
+                        <img src="icons/icons-precio-de-venta.png" style="width: 20px; height: auto;">
+                        <a>Ahorra el 50%</a>
+                    </div>
+
+                    <p>Camara Tipo Ampolleta 360</p>
+
+                    <div style="display: flex;">
+                        <p id="Precio-Real-O-Descuento">$20.000</p>
+                        <p id="Precio-Real">$40.000</p>
+                        <button>
+                            <a id="Agregar-Al-Carro">Añadir al <img src="icons/anadir-al-carrito.png" style="width: 18px; height: auto;" id="Añadir-En-El-Carro-De-Compra"> </a> 
+                        </button>
+                    </div>
+                </div>
+
+                <div class="Productos">
+                    <img src="ImagenesProductos/1703008828119.png" class="Imagen-Del-Producto">
+                    
+                    <p>Reloj Encendedor Electr&oacute;nico Recargable</p>
+
+                    <div style="display: flex;">
+                        <p id="Precio-Real-O-Descuento">$13.000</p>
+                        <p id="Precio-Real"></p>
+                        <button>
+                            <a id="Agregar-Al-Carro">Añadir al <img src="icons/anadir-al-carrito.png" style="width: 18px; height: auto;" id="Añadir-En-El-Carro-De-Compra"> </a> 
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <div class="resultado">
+            <p>Imagen 1: ID - imagen-1, SRC - http://ejemplo.com/imagen-1.jpg</p>
+            <p>Imagen 2: ID - imagen-2, SRC - http://ejemplo.com/imagen-2.jpg</p>
+            <!-- Otros párrafos para cada imagen -->
+        </div>
+        
+    </body>
+
+    <script>
+        /* Javascript para que se muestre el Menu-Options */
+        var MenuButton = document.getElementById("Menu-Button");
+        var MenuOptions = document.querySelector(".Menu-Options");
+        var CloseIcon = document.getElementById("Close-Icon");
+
+		/* Javascript para que se muestre el Container-Search */
+
+		var LupaIconForMobile = document.getElementById('Lupa-Icon-For-Mobile');
+		var ContainerSearch = document.querySelector(".Container-Search");
+        var CloseIcon1 = document.getElementById("Close-Icon-1");
+
+        MenuButton.addEventListener('click', function() {
+            MenuOptions.style.left = '0';
+        });
+
+		LupaIconForMobile.addEventListener('click', function() {
+			ContainerSearch.style.top = '0';
+		});
+
+        CloseIcon.addEventListener('click', function() {
+            MenuOptions.style.left = '-100%';
+        });
+
+        CloseIcon1.addEventListener('click', function() {
+			ContainerSearch.style.top = '-100%';
+        });
+
+        /* Javascript para ver cuantos productos hay dentro del carro de compras */
+        
+        // Supongamos que tienes una variable que contiene la cantidad de productos
+        let cantidadProductos = 0; // Ejemplo: 5 productos en el carro
+
+        // Selecciona el elemento del círculo
+        const numero_en_el_carro = document.querySelector('.Numero');
+
+        // Actualiza el contenido del círculo con la cantidad de productos
+        numero_en_el_carro.textContent = cantidadProductos;
+    </script>
+</html>

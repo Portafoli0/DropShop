@@ -253,3 +253,46 @@ main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra
         display: block;
     }
 }
+
+@media (max-width: 740px) {
+    main .Contenedor-De-Productos .Productos {
+        width: 240px;
+    }
+
+    main .Contenedor-De-Productos .Productos .Imagen-Del-Producto{
+        width: 240px;
+        height: 240px;
+    }
+
+    main .Contenedor-De-Productos .Productos .Lugar_Donde_Se_Mostraran_Los_Descuentos {
+        top: -252px;
+    }
+
+    main .Contenedor-De-Productos .Productos div #Precio-Real-O-Descuento {
+        margin-right: 10px;
+    }
+
+    main .Contenedor-De-Productos .Productos div #Precio-Real {
+        margin-right: 7px;
+    }
+
+    main .Contenedor-De-Productos .Productos div .Agregar-Al-Carrito-De-Compras {
+        font-size: 14px;
+    }
+
+    main .Contenedor-De-Productos .Productos div .Mover-Boton-Agregar-Al-Carrito-De-Compra {
+        left: 74px;
+    }
+}
+
+@media (max-width: 400px) {
+    main .Container-Carrito-De-Compra {
+        width: 320px;
+    }
+
+    main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra img {
+        width: 110px;
+        height: 110px;
+    }
+}
+

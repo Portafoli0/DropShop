@@ -222,9 +222,10 @@ main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra
         display: inline;
     }
 
-    .Close-Icon {
+    .Close-Icon, nav .Container-Icons-Search-Buy .Container-Search .Close-Icon {
         display: inline;
     }
+
 }
 
 @media (max-width: 899px) {
@@ -295,4 +296,3 @@ main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra
         height: 110px;
     }
 }
-

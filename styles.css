@@ -240,6 +240,7 @@ main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra
         background-color: rgb(204, 204, 204);
         width: 250px;
         transition: left 1s ease;
+        z-index: 2;
     }
 
     nav .Menu-Options .Menu-Options-Icons {
@@ -252,6 +253,10 @@ main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra
 
     nav .Menu-Options li {
         display: block;
+    }
+
+    nav .Menu-Options .Menu-Options-Icons .Close-Icon {
+        display: inline;
     }
 }
 
@@ -296,3 +301,4 @@ main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra
         height: 110px;
     }
 }
+

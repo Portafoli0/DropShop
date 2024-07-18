@@ -7,7 +7,7 @@ var LupaIconForMobile = document.getElementById('Lupa-Icon-For-Mobile');
 var ContainerSearch = document.querySelector('.Container-Search');
 
 var CarritoDeCompras = document.getElementById('Carrito-De-Compras');
-var ContainerCarritoDeCompra = document.querySelector('.Container-Carrito-De-Compra');
+var Ruta_donde_debe_buscarDeCompra = document.querySelector('.Container-Carrito-De-Compra');
 
 var CloseIcons = document.querySelectorAll('.Close-Icon'); // Corregido a querySelectorAll
 
@@ -20,7 +20,7 @@ LupaIconForMobile.addEventListener('click', function() {
 });
 
 CarritoDeCompras.addEventListener('click', function() {
-    ContainerCarritoDeCompra.style.right = '0';
+    Ruta_donde_debe_buscarDeCompra.style.right = '0';
 });
 // Añadir event listener a cada elemento CloseIcon
 
@@ -28,399 +28,200 @@ CloseIcons.forEach(function(icon) {
     icon.addEventListener('click', function() {
         MenuOptions.style.left = '-100%';
         ContainerSearch.style.top = '-100%';
-        ContainerCarritoDeCompra.style.right = '-100%';
+        Ruta_donde_debe_buscarDeCompra.style.right = '-100%';
     });
 });
 // ------------------------------------------------------------- //
 
-/*
-var Caracteristicas_Del_Producto = []; // Array para almacenar los productos agregados al carrito
-var contadorImagenes = 0; // Contador para IDs de imágenes
-var imagenIds = {}; // Mapa para almacenar IDs de imágenes según su URL
+var Almacen = []; // Lugar donde se va almacenar todos los productos cuando se le de click a "Agregar al carrito"
+var contadorImagenes = 0; // Asignar cada id a las imagenes
+var imagenIds = {}; // Lugar donde se almacenera los IDs de imágenes según su URL
 
-// Crear el contenedor principal del carrito de compra si no existe
-var containerCarrito = document.querySelector('.Container-Carrito-De-Compra');
-if (!containerCarrito) {
-    containerCarrito = document.createElement('div');
-    containerCarrito.classList.add('Container-Carrito-De-Compra');
-    document.body.appendChild(containerCarrito); // Agregar al body o a otro elemento padre según tu estructura
+// Seleccionar el contenedor principal
+var Ruta_donde_debe_buscar = document.querySelector('.Container-Carrito-De-Compra');
+
+function Mensaje() {
+    // Verifica si existe el contenedor de productos
+    var existeContenedorProductos = Ruta_donde_debe_buscar.querySelector('.Contenedor-De-Productos-En-El-Carro-De-Compra');
+
+    var precioTotal = Almacen.reduce(function(total, producto) {
+        return total + (producto.cantidad * producto.precio);
+    }, 0);
+    
+    var precioTotalConComas = precioTotal.toLocaleString('es-ES');
+    var precioTotalConSimbolo = `$${precioTotalConComas}`;
+    
+    // Obtener el botón dentro de .Finalizar_Pedido para ponerle el mensaje
+    var botonFinalizarPedido = document.querySelector('.Finalizar_Pedido button');
+
+    // Verificar si ya existe un mensaje en el botón
+    var mensajeExistente = botonFinalizarPedido.querySelector('.mensaje');
+    if (mensajeExistente) {
+        // Si existe, actualiza el texto
+        mensajeExistente.textContent = !existeContenedorProductos ? "Sigue explorando" : `Finalizar pedido - ${precioTotalConSimbolo}`;
+    } else {
+        // Crear un nuevo elemento <a> solo si no existe
+        var mensaje = document.createElement('a');
+        mensaje.className = 'mensaje'; // Asignar una clase
+
+        // Establecer el texto del mensaje
+        mensaje.textContent = !existeContenedorProductos ? "Sigue explorando" : `Finalizar pedido - ${precioTotalConSimbolo}`;
+        
+        // Agregar el mensaje al botón
+        botonFinalizarPedido.appendChild(mensaje);
+    }
 }
 
-// Elemento para mostrar la cantidad total en el carrito
-var cantidadTotalElemento = document.querySelector('.Container-Carrito-De-Compra .Container-Carrito-De-Compra-Icons .Numero');
+function actualizarCantidadTotal() {
+    var cantidadTotal = Almacen.reduce(function(total, producto) {
+        return total + producto.cantidad;
+    }, 0);
+    
+    var cantidadTotalElementoCarrito = document.querySelector('.Container-Carrito-De-Compra .Container-Carrito-De-Compra-Icons .Numero');
+    var cantidadTotalElementoNav = document.querySelector('nav .Container-Icons-Search-Buy .Numero');
+    
+    if (cantidadTotalElementoCarrito) {
+        cantidadTotalElementoCarrito.textContent = `Carrito de compra (${cantidadTotal})`;
+    }
+    if (cantidadTotalElementoNav) {
+        cantidadTotalElementoNav.textContent = cantidadTotal;
+    }
+}
+
+Mensaje(); // Ejecutar la función
 
 var BotonAgregarAlCarrito = document.querySelectorAll('.Agregar-Al-Carrito-De-Compras');
 
 BotonAgregarAlCarrito.forEach(function(boton) {
-    boton.addEventListener('click', function() { 
-        // Crear un nuevo contenedor para este producto en el carrito
-        var contenedorProductos = document.createElement('div');
-        contenedorProductos.classList.add('Contenedor-De-Productos-En-El-Carro-De-Compra');
-        
-        // Obtener el nombre del producto
+    boton.addEventListener('click', function() {
         var nombreProducto = boton.closest('.Productos').querySelector('#Nombre_Del_Producto').textContent;
-
-        // Obtener el precio del producto y convertirlo a número
-        var precioTexto = boton.closest('.Productos').querySelector('#Precio-Real-O-Descuento').textContent;
-        var precio = parseFloat(precioTexto.replace('.', '').replace(',', '.').replace('$', '').trim());
-
-        // Obtener la ruta de la imagen del producto
+        var Precio_Formato_Texto = boton.closest('.Productos').querySelector('#Precio-Real-O-Descuento').textContent;
+        var Precio_Tipo_Entero = parseFloat(Precio_Formato_Texto.replace('$', '').replace('.', '').trim());
         var imagen = boton.closest('.Productos').querySelector('.Imagen-Del-Producto');
         var rutaImagen = imagen.getAttribute('src');
-
-        // Verificar si la imagen ya tiene un ID asignado
         var idImagen;
+
         if (imagenIds[rutaImagen] !== undefined) {
-            idImagen = imagenIds[rutaImagen]; // Usar ID existente
+            idImagen = imagenIds[rutaImagen];
         } else {
-            idImagen = contadorImagenes++; // Crear nuevo ID
-            imagenIds[rutaImagen] = idImagen; // Almacenar en el mapa
+            idImagen = contadorImagenes++;
+            imagenIds[rutaImagen] = idImagen;
         }
 
-        // Comprobar si la imagen ya existe en el contenedor principal del carrito
-        var productoExistente = Caracteristicas_Del_Producto.find(function(item) {
+        var productoExistente = Almacen.find(function(item) {
             return item.idImagen === idImagen;
         });
 
         if (productoExistente) {
-            // Incrementar la cantidad en Caracteristicas_Del_Producto
             productoExistente.cantidad++;
-            
-            // Actualizar la cantidad en la etiqueta p del DOM
-            var cantidadElemento = containerCarrito.querySelector(`#imagen-${idImagen}`).nextElementSibling.querySelector('p');
+            var cantidadElemento = Ruta_donde_debe_buscar.querySelector(`#imagen-${idImagen}`).nextElementSibling.querySelector('p');
             cantidadElemento.textContent = productoExistente.cantidad;
-
-            // Mostrar mensaje en consola
-            console.log('Se incrementó la cantidad para', nombreProducto, 'a', productoExistente.cantidad);
-            console.log(Caracteristicas_Del_Producto);
-
-            // Actualizar la cantidad total en el carrito
             actualizarCantidadTotal();
-            
-            // Salir de la función ya que la imagen ya está en el carrito
+            Mensaje();
             return;
-        }
-
-        // Crear la imagen
-        var imagenElemento = document.createElement('img');
-        imagenElemento.src = rutaImagen;
-        imagenElemento.alt = nombreProducto;
-        imagenElemento.id = `imagen-${idImagen}`; // Asigna el ID a la imagen
-
-        // Crear una lista desordenada para el nombre y botones
-        var ul = document.createElement('ul');
-
-        // Crear el nombre del producto
-        var nombreElemento = document.createElement('li');
-        nombreElemento.textContent = nombreProducto;
-        ul.appendChild(nombreElemento);
-
-        // Crear los botones y el párrafo para la cantidad
-        var liBotones = document.createElement('li');
-
-        var buttonMenos = document.createElement('button');
-        buttonMenos.style.backgroundColor = 'white';
-        buttonMenos.style.border = 'none';
-        buttonMenos.innerHTML = '<img src="Icons/menos.png" style="width: 13px; height: auto; position: relative; right: 6px;">';
-        buttonMenos.addEventListener('click', function() {
-            // Obtener la etiqueta p de cantidad dentro del contenedor
-            var cantidadElemento = contenedorProductos.querySelector('p');
-            
-            // Buscar el producto correspondiente en Caracteristicas_Del_Producto
-            var producto = Caracteristicas_Del_Producto.find(function(item) {
-                return item.idImagen === idImagen;
-            });
-
-            // Verificar si la cantidad es mayor que 1 antes de restar
-            if (producto.cantidad > 1) {
-                producto.cantidad--;
-                cantidadElemento.textContent = producto.cantidad;
-                console.log('Se restó una unidad. Nueva cantidad:', producto.cantidad);
-            } else {
-                console.log('La cantidad mínima es 1. No se puede restar más.');
-            }
-
-            // Actualizar la cantidad total en el carrito
-            actualizarCantidadTotal();
-        });
-        liBotones.appendChild(buttonMenos);
-
-        var cantidadElemento = document.createElement('p');
-        cantidadElemento.textContent = '1'; // Valor inicial de cantidad
-        cantidadElemento.style.width = '16px';
-        cantidadElemento.style.height = '16px';
-        cantidadElemento.style.fontSize = '16px';
-        cantidadElemento.style.textAlign = 'center';
-        cantidadElemento.style.border = '0';
-        cantidadElemento.style.display = 'inline-block';
-        cantidadElemento.style.margin = '0';
-        cantidadElemento.style.padding = '0 5px';
-        liBotones.appendChild(cantidadElemento);
-
-        var buttonMas = document.createElement('button');
-        buttonMas.style.backgroundColor = 'white';
-        buttonMas.style.border = 'none';
-        buttonMas.style.position = 'relative';
-        buttonMas.style.right = '8px';
-        buttonMas.innerHTML = '<img src="Icons/mas.webp" style="width: 13px; height: auto;">';
-        buttonMas.addEventListener('click', function() {
-            // Obtener la etiqueta p de cantidad dentro del contenedor
-            var cantidadElemento = contenedorProductos.querySelector('p');
-            
-            // Buscar el producto correspondiente en Caracteristicas_Del_Producto
-            var producto = Caracteristicas_Del_Producto.find(function(item) {
-                return item.idImagen === idImagen;
-            });
-
-            // Incrementar la cantidad y actualizar en el DOM
-            producto.cantidad++;
-            cantidadElemento.textContent = producto.cantidad;
-            console.log('Se sumó una unidad. Nueva cantidad:', producto.cantidad);
-
-            // Actualizar la cantidad total en el carrito
-            actualizarCantidadTotal();
-        });
-        liBotones.appendChild(buttonMas);
-
-        // Agregar la lista de botones a la lista desordenada
-        ul.appendChild(liBotones);
-
-        // Agregar todos los elementos al contenedor del producto
-        contenedorProductos.appendChild(imagenElemento);
-        contenedorProductos.appendChild(ul);
-
-        // Agregar el contenedor del producto al contenedor principal del carrito
-        containerCarrito.appendChild(contenedorProductos);
-
-        // Almacenar el producto en el array Caracteristicas_Del_Producto
-        Caracteristicas_Del_Producto.push({
-            nombre: nombreProducto,
-            precio: precio,
-            imagen: rutaImagen,
-            idImagen: idImagen, // Almacena el ID de la imagen
-            cantidad: 1 // Inicializar la cantidad en 1
-        });
-
-        // Mostrar la información en la consola
-        console.log('Información del producto agregado:', {
-            nombre: nombreProducto,
-            precio: precio,
-            imagen: rutaImagen,
-            idImagen: idImagen,
-            cantidad: 1
-        });
-
-        console.log(Caracteristicas_Del_Producto);
-
-        // Actualizar la cantidad total en el carrito al agregar un nuevo producto
-        actualizarCantidadTotal();
-    });
-});
-
-// Función para actualizar la cantidad total en el carrito
-function actualizarCantidadTotal() {
-    var cantidadTotal = Caracteristicas_Del_Producto.reduce(function(total, producto) {
-        return total + producto.cantidad;
-    }, 0);
-    
-    cantidadTotalElemento.textContent = `Carrito de compra (${cantidadTotal})`;
-}
-*/
-
-
-var Caracteristicas_Del_Producto = []; // Array para almacenar los productos agregados al carrito
-var contadorImagenes = 0; // Contador para IDs de imágenes
-var imagenIds = {}; // Mapa para almacenar IDs de imágenes según su URL
-
-// Crear el contenedor principal del carrito de compra si no existe
-var containerCarrito = document.querySelector('.Container-Carrito-De-Compra');
-if (!containerCarrito) {
-    containerCarrito = document.createElement('div');
-    containerCarrito.classList.add('Container-Carrito-De-Compra');
-    document.body.appendChild(containerCarrito); // Agregar al body o a otro elemento padre según tu estructura
-}
-
-// Elemento para mostrar la cantidad total en el carrito en el Container-Carrito-De-Compra-Icons
-var cantidadTotalElementoCarrito = document.querySelector('.Container-Carrito-De-Compra .Container-Carrito-De-Compra-Icons .Numero');
-
-// Elemento para mostrar la cantidad total en el carrito en nav .Container-Icons-Search-Buy .Numero
-var cantidadTotalElementoNav = document.querySelector('nav .Container-Icons-Search-Buy .Numero');
-
-var BotonAgregarAlCarrito = document.querySelectorAll('.Agregar-Al-Carrito-De-Compras');
-
-BotonAgregarAlCarrito.forEach(function(boton) {
-    boton.addEventListener('click', function() { 
-        // Crear un nuevo contenedor para este producto en el carrito
-        var contenedorProductos = document.createElement('div');
-        contenedorProductos.classList.add('Contenedor-De-Productos-En-El-Carro-De-Compra');
-        
-        // Obtener el nombre del producto
-        var nombreProducto = boton.closest('.Productos').querySelector('#Nombre_Del_Producto').textContent;
-
-        // Obtener el precio del producto y convertirlo a número
-        var precioTexto = boton.closest('.Productos').querySelector('#Precio-Real-O-Descuento').textContent;
-        var precio = parseFloat(precioTexto.replace('.', '').replace(',', '.').replace('$', '').trim());
-
-        // Obtener la ruta de la imagen del producto
-        var imagen = boton.closest('.Productos').querySelector('.Imagen-Del-Producto');
-        var rutaImagen = imagen.getAttribute('src');
-
-        // Verificar si la imagen ya tiene un ID asignado
-        var idImagen;
-        if (imagenIds[rutaImagen] !== undefined) {
-            idImagen = imagenIds[rutaImagen]; // Usar ID existente
         } else {
-            idImagen = contadorImagenes++; // Crear nuevo ID
-            imagenIds[rutaImagen] = idImagen; // Almacenar en el mapa
-        }
-
-        // Comprobar si la imagen ya existe en el contenedor principal del carrito
-        var productoExistente = Caracteristicas_Del_Producto.find(function(item) {
-            return item.idImagen === idImagen;
-        });
-
-        if (productoExistente) {
-            // Incrementar la cantidad en Caracteristicas_Del_Producto
-            productoExistente.cantidad++;
-            
-            // Actualizar la cantidad en la etiqueta p del DOM
-            var cantidadElemento = containerCarrito.querySelector(`#imagen-${idImagen}`).nextElementSibling.querySelector('p');
-            cantidadElemento.textContent = productoExistente.cantidad;
-
-            // Mostrar mensaje en consola
-            console.log('Se incrementó la cantidad para', nombreProducto, 'a', productoExistente.cantidad);
-            console.log(Caracteristicas_Del_Producto);
-
-            // Actualizar la cantidad total en el carrito
-            actualizarCantidadTotal();
-            
-            // Salir de la función ya que la imagen ya está en el carrito
-            return;
-        }
-
-        // Crear la imagen
-        var imagenElemento = document.createElement('img');
-        imagenElemento.src = rutaImagen;
-        imagenElemento.alt = nombreProducto;
-        imagenElemento.id = `imagen-${idImagen}`; // Asigna el ID a la imagen
-
-        // Crear una lista desordenada para el nombre y botones
-        var ul = document.createElement('ul');
-
-        // Crear el nombre del producto
-        var nombreElemento = document.createElement('li');
-        nombreElemento.textContent = nombreProducto;
-        ul.appendChild(nombreElemento);
-
-        // Crear los botones y el párrafo para la cantidad
-        var liBotones = document.createElement('li');
-
-        var buttonMenos = document.createElement('button');
-        buttonMenos.style.backgroundColor = 'white';
-        buttonMenos.style.border = 'none';
-        buttonMenos.innerHTML = '<img src="Icons/menos.png" style="width: 13px; height: auto; position: relative; right: 6px;">';
-        buttonMenos.addEventListener('click', function() {
-            // Obtener la etiqueta p de cantidad dentro del contenedor
-            var cantidadElemento = contenedorProductos.querySelector('p');
-            
-            // Buscar el producto correspondiente en Caracteristicas_Del_Producto
-            var producto = Caracteristicas_Del_Producto.find(function(item) {
-                return item.idImagen === idImagen;
-            });
-
-            // Verificar si la cantidad es mayor que 1 antes de restar
-            if (producto.cantidad > 1) {
-                producto.cantidad--;
-                cantidadElemento.textContent = producto.cantidad;
-                console.log('Se restó una unidad. Nueva cantidad:', producto.cantidad);
-            } else {
-                console.log('La cantidad mínima es 1. No se puede restar más.');
+            // Seleccionar el contenedor .Contenedor
+            var contenedorPrincipal = Ruta_donde_debe_buscar.querySelector('.Contenedor');
+            if (!contenedorPrincipal) {
+                // Si no existe el contenedor .Contenedor, crearlo y añadirlo a .Container-Carrito-De-Compra
+                contenedorPrincipal = document.createElement('div');
+                contenedorPrincipal.classList.add('Contenedor');
+                Ruta_donde_debe_buscar.appendChild(contenedorPrincipal);
             }
 
-            // Actualizar la cantidad total en el carrito
-            actualizarCantidadTotal();
-        });
-        liBotones.appendChild(buttonMenos);
+            var Contenedor_De_Los_Productos = document.createElement('div');
+            Contenedor_De_Los_Productos.classList.add('Contenedor-De-Productos-En-El-Carro-De-Compra');
+            contenedorPrincipal.appendChild(Contenedor_De_Los_Productos);
 
-        var cantidadElemento = document.createElement('p');
-        cantidadElemento.textContent = '1'; // Valor inicial de cantidad
-        cantidadElemento.style.width = '16px';
-        cantidadElemento.style.height = '16px';
-        cantidadElemento.style.fontSize = '16px';
-        cantidadElemento.style.textAlign = 'center';
-        cantidadElemento.style.border = '0';
-        cantidadElemento.style.display = 'inline-block';
-        cantidadElemento.style.margin = '0';
-        cantidadElemento.style.padding = '0 5px';
-        liBotones.appendChild(cantidadElemento);
+            var imagenElemento = document.createElement('img');
+            imagenElemento.src = rutaImagen;
+            imagenElemento.alt = nombreProducto;
+            imagenElemento.id = `imagen-${idImagen}`;
 
-        var buttonMas = document.createElement('button');
-        buttonMas.style.backgroundColor = 'white';
-        buttonMas.style.border = 'none';
-        buttonMas.style.position = 'relative';
-        buttonMas.style.right = '8px';
-        buttonMas.innerHTML = '<img src="Icons/mas.webp" style="width: 13px; height: auto;">';
-        buttonMas.addEventListener('click', function() {
-            // Obtener la etiqueta p de cantidad dentro del contenedor
-            var cantidadElemento = contenedorProductos.querySelector('p');
-            
-            // Buscar el producto correspondiente en Caracteristicas_Del_Producto
-            var producto = Caracteristicas_Del_Producto.find(function(item) {
-                return item.idImagen === idImagen;
+            Contenedor_De_Los_Productos.appendChild(imagenElemento);
+
+            var ul = document.createElement('ul');
+            var nombreElemento = document.createElement('li');
+            nombreElemento.textContent = nombreProducto;
+            nombreElemento.style.fontSize = '15px';
+            nombreElemento.style.fontWeight = 400;
+            ul.appendChild(nombreElemento);
+
+            var precioElemento = document.createElement('li');
+            precioElemento.textContent = Precio_Formato_Texto;
+            ul.appendChild(precioElemento);
+
+            var liBotones = document.createElement('li');
+
+            var cantidadElemento = document.createElement('p');
+            cantidadElemento.textContent = '1';
+            cantidadElemento.style.width = '16px';
+            cantidadElemento.style.height = '16px';
+            cantidadElemento.style.fontSize = '16px';
+            cantidadElemento.style.textAlign = 'center';
+            cantidadElemento.style.border = '0';
+            cantidadElemento.style.display = 'inline-block';
+            cantidadElemento.style.margin = '0';
+            cantidadElemento.style.padding = '0 5px';
+
+            var buttonMenos = document.createElement('button');
+            buttonMenos.style.backgroundColor = 'white';
+            buttonMenos.style.border = 'none';
+            buttonMenos.innerHTML = '<img src="Icons/menos.png" style="width: 13px; height: auto; position: relative; right: 6px;">';
+            buttonMenos.addEventListener('click', function() {
+                var producto = Almacen.find(function(item) {
+                    return item.idImagen === idImagen;
+                });
+
+                if (producto.cantidad > 1) {
+                    producto.cantidad--;
+                    cantidadElemento.textContent = producto.cantidad;
+                    Mensaje();
+                    actualizarCantidadTotal();
+                } else {
+                    Almacen = Almacen.filter(function(item) {
+                        return item.idImagen !== idImagen;
+                    });
+                    Contenedor_De_Los_Productos.remove();
+                    actualizarCantidadTotal();
+                    Mensaje();
+                }
             });
 
-            // Incrementar la cantidad y actualizar en el DOM
-            producto.cantidad++;
-            cantidadElemento.textContent = producto.cantidad;
-            console.log('Se sumó una unidad. Nueva cantidad:', producto.cantidad);
+            var buttonMas = document.createElement('button');
+            buttonMas.style.backgroundColor = 'white';
+            buttonMas.style.border = 'none';
+            buttonMas.style.position = 'relative';
+            buttonMas.style.right = '8px';
+            buttonMas.innerHTML = '<img src="Icons/mas.webp" style="width: 13px; height: auto;">';
+            buttonMas.addEventListener('click', function() {
+                var producto = Almacen.find(function(item) {
+                    return item.idImagen === idImagen;
+                });
 
-            // Actualizar la cantidad total en el carrito
-            actualizarCantidadTotal();
-        });
-        liBotones.appendChild(buttonMas);
+                producto.cantidad++;
+                cantidadElemento.textContent = producto.cantidad;
+                actualizarCantidadTotal();
+                Mensaje();
+            });
 
-        // Agregar la lista de botones a la lista desordenada
-        ul.appendChild(liBotones);
+            ul.appendChild(liBotones);
+            liBotones.appendChild(buttonMenos);
+            liBotones.appendChild(cantidadElemento);
+            liBotones.appendChild(buttonMas);
 
-        // Agregar todos los elementos al contenedor del producto
-        contenedorProductos.appendChild(imagenElemento);
-        contenedorProductos.appendChild(ul);
+            Contenedor_De_Los_Productos.appendChild(ul);
 
-        // Agregar el contenedor del producto al contenedor principal del carrito
-        containerCarrito.appendChild(contenedorProductos);
+            Almacen.push({
+                idImagen,
+                nombre: nombreProducto,
+                Precio: Precio_Formato_Texto,
+                precio: Precio_Tipo_Entero,
+                cantidad: 1,
+            });
+        }
 
-        // Almacenar el producto en el array Caracteristicas_Del_Producto
-        Caracteristicas_Del_Producto.push({
-            nombre: nombreProducto,
-            precio: precio,
-            imagen: rutaImagen,
-            idImagen: idImagen, // Almacena el ID de la imagen
-            cantidad: 1 // Inicializar la cantidad en 1
-        });
-
-        // Mostrar la información en la consola
-        console.log('Información del producto agregado:', {
-            nombre: nombreProducto,
-            precio: precio,
-            imagen: rutaImagen,
-            idImagen: idImagen,
-            cantidad: 1
-        });
-
-        console.log(Caracteristicas_Del_Producto);
-
-        // Actualizar la cantidad total en el carrito al agregar un nuevo producto
         actualizarCantidadTotal();
+        Mensaje();
     });
 });
-
-// Función para actualizar la cantidad total en el carrito
-function actualizarCantidadTotal() {
-    var cantidadTotal = Caracteristicas_Del_Producto.reduce(function(total, producto) {
-        return total + producto.cantidad;
-    }, 0);
-    
-    // Actualizar solo el número en los elementos correspondientes
-    cantidadTotalElementoCarrito.textContent = `Carrito de compra (${cantidadTotal})`;;
-    cantidadTotalElementoNav.textContent = cantidadTotal;
-}

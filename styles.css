@@ -1,0 +1,272 @@
+* {
+    margin: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+img, button, #Button-Search {
+    cursor: pointer;
+}
+
+header {
+    background-color: #2d8eff;
+    color: white;
+    text-align: center;
+    font-weight: 800;
+    font-size: clamp(16px, 4vw, 20px);
+}
+
+nav {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+nav img {
+    width: 26px;
+    height: auto;
+}
+
+nav #Menu-Button {
+    display: none;
+}
+
+ul {
+    list-style: none;
+}
+
+.Menu-Options li {
+    display: inline;
+    margin: 18px 5px 18px 5px;
+    font-size: 17px;
+}
+
+.Menu-Options li a {
+    color: black;
+    text-decoration: none;
+}
+
+
+.Container-Icons-Search-Buy #Lupa-Icon-For-Mobile {
+    display: none;
+}
+
+.Menu-Options .Menu-Options-Icons {
+    display: none;
+}
+
+nav .Container-Icons-Search-Buy .Container-Search #Search {
+    padding: 5px 0px 5px 11px;
+    border-radius: 10px 0px 0px 10px;
+}
+
+nav .Container-Icons-Search-Buy .Container-Search #Button-Search {
+    background-color: #2d8eff;
+    border: 0;
+    color: white;
+    font-weight: 800;
+    font-size: 16px;
+    height: 30px;
+    border-radius: 0 0 10px 0;
+}
+
+nav .Container-Icons-Search-Buy .Numero {
+    position: relative;
+    top: -12px;
+    right: -1px;
+}
+
+main #Titulo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+main .Contenedor-De-Productos {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+main .Contenedor-De-Productos .Productos {
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 10px;
+    padding: 10px;
+    border-radius: 10px;
+    width: 320px;
+    height: auto;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+main .Contenedor-De-Productos .Productos .Imagen-Del-Producto {
+    width: 320px;
+    height: 320px;
+}
+
+main .Contenedor-De-Productos .Productos .Lugar_Donde_Se_Mostraran_Los_Descuentos {
+    background-color: rgb(33, 37, 41);
+    color: white;
+    height: 22px;
+    position: relative;
+    top: -326px;
+    width: fit-content;
+    padding-right: 5px;
+    border-radius: 8px;
+}
+
+main .Contenedor-De-Productos .Productos .Lugar_Donde_Se_Mostraran_Los_Descuentos a {
+    position: relative;
+    top: -5px;
+}
+
+main .Contenedor-De-Productos .Productos div #Precio-Real-O-Descuento {
+    font-weight: 700;
+    margin-right: 20px;
+}
+
+main .Contenedor-De-Productos .Productos div #Precio-Real {
+    color: rgb(122, 122, 122);
+    text-decoration: line-through;
+    margin-right: 68px;
+}
+
+main .Contenedor-De-Productos .Productos div .Agregar-Al-Carrito-De-Compras {
+    background-color: rgb(45, 142, 255);
+    color: white;
+    border: 0px;
+    border-radius: 6px;
+    font-size: 15px;
+    height: 24px;
+}
+
+main .Contenedor-De-Productos .Productos div .Mover-Boton-Agregar-Al-Carrito-De-Compra {
+    position: relative;
+    left: 135px;
+}
+
+body .Contenedor img {
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+    margin-left: 16px;
+}
+
+main .Container-Carrito-De-Compra {
+    position: absolute;
+    top: 0;
+    right: -100%;
+    background-color: white;
+    width: 400px;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    transition: right 1s ease;
+}
+
+main .Container-Carrito-De-Compra .Container-Carrito-De-Compra-Icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+main .Container-Carrito-De-Compra .Container-Carrito-De-Compra-Icons img {
+    width: 23px;
+    height: 23px;
+}
+
+/* Aca empieza Contenedor-De-Productos-En-El-Carro-De-Compra */
+
+main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra {
+    display: flex;
+    font-weight: 500;
+    margin-right: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra img {
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+    margin-left: 16px;
+}
+
+.Finalizar_Pedido {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 1100px) {
+    nav .Menu-Options .Menu-Options-Icons .Close-Icon, nav .Container-Icons-Search-Buy .Container-Search .Close-Icon {
+        display: none;
+    }
+}
+
+@media (max-width: 1099px) {
+    .Container-Icons-Search-Buy .Container-Search {
+        position: absolute;
+        top: -100%;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 70px;
+        background-color: #e8e8e8;
+        transition: top 1s ease;
+    }
+
+    .Container-Icons-Search-Buy #Lupa-Icon-For-Mobile {
+        display: inline;
+    }
+
+    .Close-Icon {
+        display: inline;
+    }
+}
+
+@media (max-width: 899px) {
+    nav #Menu-Button {
+        display: inline;
+    }
+
+    nav .Menu-Options {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        background-color: rgb(204, 204, 204);
+        width: 250px;
+        transition: left 1s ease;
+        z-index: 2;
+    }
+
+    nav .Menu-Options .Menu-Options-Icons {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        position: relative;
+        left: -20px;
+    }
+
+    nav .Menu-Options li {
+        display: block;
+    }
+}
+
+@media (max-width: 399px) {
+    main .Container-Carrito-De-Compra {
+        width: 320px;
+    }
+
+    main .Container-Carrito-De-Compra .Contenedor-De-Productos-En-El-Carro-De-Compra img {
+        width: 110px;
+        height: 110px;
+    }
+}

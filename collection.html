@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <meta http-equiv="Cache-Control" content="max-age=3600, public">
+        <link rel="stylesheet" href="styles.css" type="text/css">
+
+        <meta name="description" content="Descubre nuestra tienda online en Chile con envío contra entrega. Encuentra todo lo que necesitas para el hogar, tecnología innovadora, productos de belleza, moda actual, artículos para mascotas y equipos de camping. Explora nuestra selección de productos con entrega rápida y conveniente, perfecta para renovar tu hogar, mantenerte conectado, cuidarte a ti mismo, vestir a la moda, mimar a tus mascotas y disfrutar al aire libre. ¡Compra fácil y seguro desde la comodidad de tu casa!">
+    </head>
+
+    <body>
+        <header>PAGA EN CASA + ENV&Iacute;OS GRATIS</header>
+
+        <nav>
+            <img id="Menu-Button" src="Icons/menu.png" alt="Boton de menú" style="width: 25px; height: 25px;">
+            
+            <img src="Icons/Logo.png" style="width: 160px; height: 160px;" alt="Logo">
+        
+            <ul class="Menu-Options">
+                <li><div class="Menu-Options-Icons">
+                    <img src="Icons/menu.png" style="margin-right: 5px; width: 25px; height: 25px;" alt="Icono de Menú">
+                
+                    <h3 style="margin-right: 125px;">Menú</h3>
+
+                    <img src="Icons/equis.png" class="Close-Icon" alt="Boton para cerrar el Menú" style="width: 25px; height: 25px;">
+                </div> </li>
+            
+               <li> <a href="">Hogar</a> </li>
+                <li> <a href="">Tecnolog&iacute;a</a> </li>
+                <li> <a href="">Belleza</a> </li>
+                <li> <a href="">Vestimenta</a> </li>
+                <li> <a href="">Mascotas</a> </li>
+                <li> <a href="">Camping</a> </li>
+            </ul>
+
+            <div class="Container-Icons-Search-Buy" style="display: flex;">
+                <img src="Icons/lupa.png" id="Lupa-Icon-For-Mobile" alt="Boton de buscar" style="width: 25px; height: 25px;">
+
+                    <div class="Container-Search" style="display: flex;">
+                        <input type="text" placeholder="Buscar productos" id="Search">
+                        
+                        <input type="button" value="Buscar" id="Button-Search">
+                    
+                        <img src="Icons/equis.png" style="margin-left: 14px; width: 25px; height: 25px;" class="Close-Icon" alt="Boton para cerrar el buscador">
+                    </div>
+
+                    <img src="Icons/carrito-de-compras.png" style="margin-left: 20px; width: 25px; height: 25px;" id="Carrito-De-Compras" alt="Boton para ver el carro de compras">
+                    <div class="Numero-De-Productos-Almacenados">10</div>
+            </div>
+        </nav>
+    
+        <main>
+            <section style="display: flex; justify-content: center;">
+                <article></article>
+            </section>
+        </main>
+    <div id="contenido">
+        <!-- Aquí se mostrará el contenido dinámico -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtener parámetros 'id', 'nombre' y 'ruta' de la URL
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const nombreProducto = params.get('nombre');
+            const rutaImagen = decodeURIComponent(params.get('ruta')); // Obtener la ruta de la imagen
+
+            // Modificar el título de la página
+            document.title = nombreProducto;
+
+            // Mostrar el ID del producto y la imagen en el contenedor
+            const contenido = document.querySelector('article');
+            contenido.innerHTML = `
+                <h2>ID del Producto: ${id}</h2>
+                <p>Nombre del Producto: ${nombreProducto}</p>
+                <img src="${rutaImagen}" alt="${nombreProducto}">
+            `;
+        });
+    </script>
+</body>
+</html>

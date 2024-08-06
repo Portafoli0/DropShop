@@ -1,3 +1,175 @@
+function mostrarCaracteristicas() {
+    // Definir la media query
+    let mediaQuery = window.matchMedia("(max-width: 488px)");
+
+    var params = new URLSearchParams(window.location.search);
+    var nombreProducto = params.get('Nombre');
+
+    // Encuentra el producto en el array de Productos
+    producto = Productos.find(item => item.Nombre === nombreProducto);
+
+    let caracteristicas = producto.Caracteristicas;
+
+    var main = document.querySelector("main")
+
+    var h2 = document.createElement("h2");
+    h2.textContent = "Características";
+
+    main.appendChild(h2);
+
+    var div = document.createElement("div");
+    div.classList.add("Caracteristicas");
+    // Función que se ejecutará cuando la media query coincida
+    function manejarCambioMediaQuery(e) {
+        if (e.matches) {
+            // Lógica para cuando la pantalla sea menor o igual a 488px
+            console.log("Pantalla pequeña: 488px o menos");
+
+            if (!document.querySelector("main .Caracteristicas")) {
+                // Crear un único <ul>
+                var ul = document.createElement("ul");
+
+                for (let key in caracteristicas) {
+                    if (caracteristicas.hasOwnProperty(key)) {
+                        // Extraer el índice de la clave usando una expresión regular
+                        let match = key.match(/(\d+)$/); // Busca el número al final de la clave
+                        if (match) {
+                            let index = match[1]; // Obtiene el número como string
+                            let caracteristica = caracteristicas[key]; // Accede al valor
+
+                            // Crear un elemento <li> para cada característica
+                            var li = document.createElement("li");
+                            li.style.display = "flex";
+                            li.style.alignItems = "center";
+
+                            var img = document.createElement("img");
+                            img.alt = "Icono";
+                            img.height = 32;
+                            img.src = "Icons/default.svg"; // Reemplaza con la ruta correcta
+                            img.width = 32;
+
+                            li.appendChild(img);
+                            li.appendChild(document.createTextNode(caracteristica)); // Añadir el texto después del <img>
+
+                            // Añadir el <li> al <ul>
+                            ul.appendChild(li);
+                        }
+                    }
+                }
+
+                // Añadir el <ul> al contenedor después del bucle
+                div.appendChild(ul);
+
+                //var main = document.querySelector("main");
+                main.appendChild(div);
+            }
+        } else {
+            // Lógica para cuando la pantalla sea mayor a 488px
+            if (!document.querySelector("main .Caracteristicas")) {
+                var ul1 = document.createElement("ul");
+                var ul2 = document.createElement("ul");
+                
+                // Contadores para alternar entre las dos listas
+                var contadorUl1 = 0;
+                var contadorUl2 = 0;
+                    /* ------------------ */
+                    for (let key in caracteristicas) {
+                        if (caracteristicas.hasOwnProperty(key)) {
+                            // Extraer el índice de la clave usando una expresión regular
+                            let match = key.match(/(\d+)$/); // Busca el número al final de la clave
+                            if (match) {
+                                let index = match[1]; // Obtiene el número como string
+                                let caracteristica = caracteristicas[key]; // Accede al valor
+                    
+                                // Crear un elemento <li> para cada característica
+                                var li = document.createElement("li");
+                                li.style.display = "flex";
+                                li.style.alignItems = "center";
+                    
+                                var img = document.createElement("img");
+                                img.alt = "Icono";
+                                img.height = 32;
+                                img.src = "Icons/default.svg"; // Reemplaza con la ruta correcta
+                                img.width = 32;
+                    
+                                li.appendChild(img);
+                                li.appendChild(document.createTextNode(caracteristica)); // Añadir el texto después del <img>
+                    
+                                // Alternar entre las dos listas
+                                if (contadorUl1 <= contadorUl2) {
+                                    ul1.appendChild(li);
+                                    contadorUl1++;
+                                } else {
+                                    ul2.appendChild(li);
+                                    contadorUl2++;
+                                }
+                            
+                        }
+                    }
+                    div.appendChild(ul1);
+                    div.appendChild(ul2);
+
+                    main.appendChild(div);
+                    /* ------------------ */
+                }
+            }
+        } // aca termina el else
+
+        var verificar = document.querySelector("main .Caracteristicas");
+        // Verifica si el contenido del div supera los 240px
+        var contenidoHeight = verificar.scrollHeight;
+
+        if (contenidoHeight > 240) {
+            console.log("El contenido supera los 240px.");
+            // Aquí puedes añadir el botón para mostrar más contenido, si lo deseas
+            div1 = document.createElement("div");
+            div1.style.display = "flex";
+            div1.style.justifyContent = "center"
+
+            var Button = document.createElement("button");
+            Button.style.marginTop = "10px";
+            Button.id = "Eliminar_overflow_2";
+            Button.textContent = "Ver todas las caracteristicas";
+
+             // Crear un elemento de imagen
+            var img = document.createElement("img");
+            img.alt = "Icono"
+            img.height = 15;
+            img.src = "Icons/flecha-hacia-abajo-para-navegar.png";  // Reemplaza con la ruta a tu imagen
+            img.width = 15;  // Ajusta el tamaño según tus necesidades
+            img.style.marginLeft = "8px"; // Espacio entre el texto y la imagen
+            img.style.position = "relative";
+            img.style.top = "2px";
+
+            // Añadir la imagen al botón después del texto
+            Button.appendChild(img);
+
+            var div1 = document.createElement("div");
+            div1.style.display = "flex";
+            div1.style.justifyContent = "center";
+
+            div1.appendChild(Button);
+
+            main.appendChild(div1);
+
+            verificar.style.height = "240px"
+            verificar.style.overflowY = "hidden";
+
+            Button.addEventListener('click' ,function() {
+                verificar.style.height = "auto";
+            })
+        }
+    }
+
+    // Asociar la función manejarCambioMediaQuery con los cambios en la media query
+    mediaQuery.addListener(manejarCambioMediaQuery);
+
+    // Llamar a la función de inmediato para comprobar el estado inicial
+    manejarCambioMediaQuery(mediaQuery);
+
+    // Aquí puedes agregar el resto de la lógica de mostrarCaracteristicas
+}
+
 function contarImgRespaldo(producto) {
     var params = new URLSearchParams(window.location.search);
     var nombreProducto = params.get('Nombre');
@@ -283,6 +455,53 @@ function prueba() {
             }
         });
     });
+
+    var main = document.querySelector("main");
+
+    if (producto.Caracteristicas) {
+        mostrarCaracteristicas();
+
+        var hr = document.createElement("hr");
+
+        main.appendChild(hr);
+    }
+    
+    if (document.querySelector("main hr")) {
+        var div = document.createElement("div");
+        div.classList.add("Descripcion");
+
+        main.appendChild(div);
+
+        /*----------------------------*/
+        var Descripcion = producto.Descripcion;
+        for (let key in Descripcion) {
+            if (Descripcion.hasOwnProperty(key)) {
+                // Extraer el índice de la clave usando una expresión regular
+                let match = key.match(/(\d+)$/); // Busca el número al final de la clave
+                if (match) {
+                    let index = match[1]; // Obtiene el número como string
+        
+                    // Ajustar para índices que comienzan en 1
+                    if (parseInt(index) > 0) {
+                        let descripcion = Descripcion[key]; // Accede al valor
+        
+                        // Crear un elemento <p> para cada descripción
+                        var p = document.createElement("p");
+        
+                        // Crear un nodo de texto para la descripción
+                        var textNode = document.createTextNode(descripcion);
+        
+                        // Añadir el nodo de texto al elemento <p>
+                        p.appendChild(textNode);
+        
+                        // Añadir el <p> al contenedor
+                        div.appendChild(p);
+                    }
+                }
+            }
+        }
+        /*----------------------------*/
+    }
 } // aca termina la funcion prueba
 
 prueba();
@@ -409,9 +628,8 @@ function actualizarImagenes() {
 
             Contenedor_imagenesSecundarias.appendChild(picture);
 
-            console.log(ImgRespaldo0);
         }
-        
+
         let rutasAñadidas = new Set();
 
         for (let key in producto.rutaImagen) {
@@ -529,7 +747,7 @@ function actualizarImagenes() {
 
 
 // Inicializar la actualización de imágenes
-//actualizarImagenes();
+actualizarImagenes();
 
 // Actualizar las imágenes solo cuando cambie la URL
 window.addEventListener('popstate', function() {
